@@ -1,0 +1,24 @@
+{
+  "name": "node-js-demo-chat",
+  "version": "1.0.0",
+  "description": "Chatbot with Nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sonvt8/Node-js-DEMO-Chat.git"
+  },
+  "author": "Tommy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sonvt8/Node-js-DEMO-Chat/issues"
+  },
+  "homepage": "https://github.com/sonvt8/Node-js-DEMO-Chat#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.25.3",
+    "socket.io": "^2.3.0"
+  }
+}
