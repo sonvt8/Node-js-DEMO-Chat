@@ -3,6 +3,7 @@ const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
 const moment = require('moment');
+const userJoin = require('./utils/user');
 
 const app = express();
 const server = http.Server(app);
@@ -19,7 +20,12 @@ server.listen(PORT, () => console.log("Server is running on port " + PORT));
 io.on("connection", socket => {
     console.log("user login");
     socket.on("joinRoom", ({username, room}) => {
-        console.log(username, room);
+        const messCount = 0;
+        const joinTime  = moment();
+
+        // GET User info
+        const user = userJoin(socket.id,username, room, messCount, joinTime);
+        console.log(user);
     });
     
     socket.on("disconnect", () =>{
