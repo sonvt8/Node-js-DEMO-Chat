@@ -42,7 +42,7 @@ function messOutput(username, mess, time) {
     const text = `<b>${username}</b>: ${mess} <span class="msg_time">${time}</span>`
     const data = ` <div class="d-flex justify-content-start mb-4">
                         <div class="img_cont_msg">
-                            <img src="images/user.png"
+                            <img src="img/user.png"
                             class="rounded-circle user_img_msg">
                         </div>
                         <div class="msg_cotainer">${text}</div>
