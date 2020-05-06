@@ -26,6 +26,10 @@ $(document).ready(function () {
         // Get empty box when messages sent
         $('.type_msg').val('').focus();
     });
+    $('#logout').click(function(){
+        const url = "http://localhost:3000/";
+        $(location).attr('href',url);
+    });
 });
 
 // Return message to DOM
