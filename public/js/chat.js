@@ -46,6 +46,11 @@ socket.on("user-details", ({ messCount, duration }) => {
     messCountOutput(messCount, duration);
 });
 
+// Return message to DOM
+socket.on("user-list", users => {
+    outputUsers(users);
+});
+
 
 // Return data to DOM
 
@@ -76,5 +81,31 @@ function userOutput(username, room) {
 function messCountOutput(messCount, duration) {
     $('.user_intro > p').html(
         `${messCount} Messages - Online: ${duration}`
+    );
+}
+
+// For User List
+function outputUsers(users) {
+    const contact = $('.contacts_body > ui');
+
+    $(contact).html(
+        users.map(user =>
+            `
+            <li>
+                <div class="d-flex bd-highlight">
+                  <div class="img_cont">
+                    <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg"
+                      class="rounded-circle user_img">
+                    <span class="online_icon"></span>
+                  </div>
+                  <div class="user_info">
+                    <span>${user.username}</span>
+                    <p>${user.username} is online ${user.duration}</p>
+                  </div>
+                </div>
+            </li>
+        
+            ` 
+        ).join('')
     );
 }

@@ -4,7 +4,7 @@ const http = require('http');
 const socketio = require('socket.io');
 const moment = require('moment');
 const {formatMess, infoMess} = require('./utils/mess');
-const {userJoin, userLeft, currentUser} = require('./utils/user');
+const {userJoin, userLeft, currentUser, userList} = require('./utils/user');
 
 const app = express();
 const server = http.Server(app);
@@ -37,6 +37,9 @@ io.on("connection", socket => {
         // Tell people new user has joined their room
         socket.broadcast.to(user.room)
               .emit("server_reply", formatMess(user.username, "Hello, I'm new in this room"));
+
+        // Udate user list
+        io.to(user.room).emit("user-list", userList(user.room));
     });
 
     // listen messages from client
@@ -54,6 +57,9 @@ io.on("connection", socket => {
             // Tell everyone you are out
             socket.broadcast.to(user.room)
               .emit("server_reply", formatMess(user.username, "Bye, I'm out!"));
+            
+            // Udate user list
+            io.to(user.room).emit("user-list", userList(user.room));
         }   
     });
 });

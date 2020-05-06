@@ -21,4 +21,12 @@ function currentUser (id){
     return userChat;
 }
 
-module.exports = {userJoin, userLeft, currentUser};
+function userList(room){
+    const lst = users.filter(user => user.room === room);
+    lst.forEach(user => {
+        user.duration = moment().to(user.joinTime);
+    });
+    return lst;
+}
+
+module.exports = {userJoin, userLeft, currentUser, userList};
