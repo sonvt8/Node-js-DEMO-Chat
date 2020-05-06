@@ -8,4 +8,10 @@ function userJoin (id, username, room, messCount, joinTime){
     return userInfo;
 }
 
-module.exports = userJoin;
+function currentUser (id){
+    const userChat = users.find(user => user.id === id);
+    userChat.messCount += 1;
+    return userChat;
+}
+
+module.exports = {userJoin, currentUser};

@@ -3,7 +3,7 @@ const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
 const moment = require('moment');
-const userJoin = require('./utils/user');
+const { userJoin, currentUser } = require('./utils/user');
 
 const app = express();
 const server = http.Server(app);
@@ -18,25 +18,32 @@ const PORT = 3000 || process.env.PORT;
 server.listen(PORT, () => console.log("Server is running on port " + PORT));
 
 io.on("connection", socket => {
-    console.log("user login");
-    socket.on("joinRoom", ({username, room}) => {
+    socket.on("joinRoom", ({ username, room }) => {
         const messCount = 0;
-        const joinTime  = moment();
+        const joinTime = moment();
 
         // GET User info
-        const user = userJoin(socket.id,username, room, messCount, joinTime);
-        console.log(user);
+        const user = userJoin(socket.id, username, room, messCount, joinTime);
+        
+        // attach room name into socket
+        socket.join(user.room);
+
+        // Wellcome user joined
+        socket.emit("server_reply", `Wellcome <b>${username}</b>!!!`);
     });
-    
-    socket.on("disconnect", () =>{
-        console.log("user disconnect");
+
+    // listen messages from client
+    socket.on("message", mess => {
+        user = currentUser(socket.id);
+        io.to(user.room)
+            .emit("server_reply", `${user.username} reply ${mess}`);
     });
 });
 
-app.get("/", function(req, res){
+app.get("/", function (req, res) {
     res.render("login");
 });
 
-app.get("/room", function(req, res){
+app.get("/room", function (req, res) {
     res.render("chat-room");
 });
