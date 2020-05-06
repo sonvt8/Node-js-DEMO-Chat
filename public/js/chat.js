@@ -5,6 +5,9 @@ const { username, room } = Qs.parse(location.search, {
     ignoreQueryPrefix: true
 });
 
+// Return User profile (just join room)
+userOutput(username, room)
+
 // User Join Room
 socket.emit("joinRoom", { username, room });
 
@@ -53,3 +56,13 @@ function messOutput(username, mess, time) {
                     </div> `
     $('#chat-messages').append(data);
 };
+
+// For header user info
+function userOutput(username, room) {
+    $('.user_intro').html(
+        `
+            <span>Chat with ${username} - Room:${room}</span>
+            <p>0 Message - just join</p>
+        `
+    );
+}
