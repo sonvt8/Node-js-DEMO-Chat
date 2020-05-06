@@ -41,6 +41,11 @@ socket.on("server_reply", ({ username, mess, time }) => {
     $('#chat-messages').scrollTop($('#chat-messages').height());
 });
 
+// Update messages summary and time duration in room
+socket.on("user-details", ({ messCount, duration }) => {
+    messCountOutput(messCount, duration);
+});
+
 
 // Return data to DOM
 
@@ -64,5 +69,12 @@ function userOutput(username, room) {
             <span>Chat with ${username} - Room:${room}</span>
             <p>0 Message - just join</p>
         `
+    );
+}
+
+// For message + time duration (after chatting)
+function messCountOutput(messCount, duration) {
+    $('.user_intro > p').html(
+        `${messCount} Messages - Online: ${duration}`
     );
 }

@@ -3,7 +3,7 @@ const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
 const moment = require('moment');
-const formatMess = require('./utils/mess');
+const {formatMess, infoMess} = require('./utils/mess');
 const {userJoin, userLeft, currentUser} = require('./utils/user');
 
 const app = express();
@@ -44,6 +44,7 @@ io.on("connection", socket => {
         user = currentUser(socket.id);
         io.to(user.room)
             .emit("server_reply", formatMess(user.username, mess));
+        socket.emit("user-details", infoMess(user.messCount, user.joinTime));
     });
 
     // User Logout

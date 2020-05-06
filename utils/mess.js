@@ -8,4 +8,11 @@ function formatMess (username, mess){
     };
 }
 
-module.exports = formatMess;
+function infoMess (messCount, joinTime){
+    return {
+        messCount,
+        duration: moment().to(joinTime)
+    };
+}
+
+module.exports = {formatMess, infoMess};
