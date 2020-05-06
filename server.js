@@ -4,7 +4,7 @@ const http = require('http');
 const socketio = require('socket.io');
 const moment = require('moment');
 const {formatMess, infoMess} = require('./utils/mess');
-const {userJoin, userLeft, currentUser, userList} = require('./utils/user');
+const {userJoin, userLeft, currentUser, userList, verifyUser} = require('./utils/user');
 
 const app = express();
 const server = http.Server(app);
@@ -21,6 +21,16 @@ server.listen(PORT, () => console.log("Server is running on port " + PORT));
 const chatBot = "Tommy Chatbot";
 
 io.on("connection", socket => {
+    // Verify user if username existed or not
+    socket.on("user-login", ({ username, room }) => {
+        if (verifyUser(username, room) !== -1) {
+            socket.emit("loginStatus", { user: username, room: room, check: false });
+        } else {
+            socket.emit("loginStatus", { user: username, room: room, check: true });
+        }
+    });
+
+    // Server listen having new socket connection
     socket.on("joinRoom", ({ username, room }) => {
         const messCount = 0;
         const joinTime = moment();

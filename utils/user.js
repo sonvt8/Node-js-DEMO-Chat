@@ -29,4 +29,8 @@ function userList(room){
     return lst;
 }
 
-module.exports = {userJoin, userLeft, currentUser, userList};
+function verifyUser(username, room){
+    return users.findIndex(user => user.username === username && user.room === room);
+}
+
+module.exports = {userJoin, userLeft, currentUser, userList, verifyUser};
