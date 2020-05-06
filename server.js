@@ -3,6 +3,7 @@ const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
 const moment = require('moment');
+const formatMess = require('./utils/mess');
 const { userJoin, currentUser } = require('./utils/user');
 
 const app = express();
@@ -17,6 +18,8 @@ const PORT = 3000 || process.env.PORT;
 
 server.listen(PORT, () => console.log("Server is running on port " + PORT));
 
+const chatBot = "Tommy Chatbot";
+
 io.on("connection", socket => {
     socket.on("joinRoom", ({ username, room }) => {
         const messCount = 0;
@@ -24,19 +27,23 @@ io.on("connection", socket => {
 
         // GET User info
         const user = userJoin(socket.id, username, room, messCount, joinTime);
-        
+
         // attach room name into socket
         socket.join(user.room);
 
         // Wellcome user joined
-        socket.emit("server_reply", `Wellcome <b>${username}</b>!!!`);
+        socket.emit("server_reply", formatMess(chatBot, `Wellcome <b>${user.username}</b>!!!`));
+
+        // Tell people new user has joined their room
+        socket.broadcast.to(user.room)
+              .emit("server_reply", formatMess(user.username, "Hello, I'm new in this room"));
     });
 
     // listen messages from client
     socket.on("message", mess => {
         user = currentUser(socket.id);
         io.to(user.room)
-            .emit("server_reply", `${user.username} reply ${mess}`);
+            .emit("server_reply", formatMess(user.username, mess));
     });
 });
 
