@@ -16,6 +16,17 @@ const PORT = 3000 || process.env.PORT;
 
 server.listen(PORT, () => console.log("Server is running on port " + PORT));
 
+io.on("connection", socket => {
+    console.log("user login");
+    socket.on("joinRoom", ({username, room}) => {
+        console.log(username, room);
+    });
+    
+    socket.on("disconnect", () =>{
+        console.log("user disconnect");
+    });
+});
+
 app.get("/", function(req, res){
     res.render("login");
 });
